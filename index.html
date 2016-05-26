@@ -2,17 +2,39 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/style.css">
     <title>My sticky header</title>
   </head>
-  <body>
+  <body class="hidden">
+    <div id="indicator">
+      <p>WrapperScroll events count = <span>0</span></p>
+      <p>WrapperTouchMove events count = <span>0</span></p>
+      <p>WrapperScrollTop current = <span>0</span></p>
+      <p>Current GetBoundingClientRect().top<br> of first bar = <span>0</span></p>
+    </div>
     <div id="wrapper">
       <div class="container">
         <div class="placeholder"></div>
-        <div class="bar">1</div>
+        <div class="bar first">
+          <div class="bar-inner">1</div>
+        </div>
         <div class="placeholder"></div>
-        <div class="bar">2</div>
+        <div class="bar second">
+          <div class="bar-inner">2</div>
+        </div>
+        <div class="placeholder"></div>
+        <div class="bar third">
+          <div class="bar-inner">3</div>
+        </div>
+        <div class="placeholder"></div>
+        <div class="bar fourth">
+          <div class="bar-inner">4</div>
+        </div>
+        <div class="placeholder"></div>
+        <div class="bar fifth">
+          <div class="bar-inner">5</div>
+        </div>
       </div>
       <div id="logo">
         <a target="_blank" href="https://github.com/lifemaster/my-sticky-header">
@@ -20,7 +42,6 @@
         </a>
       </div>
     </div>
-    <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/handler.js"></script>
   </body>
 </html>

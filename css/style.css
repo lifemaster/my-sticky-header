@@ -4,14 +4,47 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
-  height: 2000px;
+  overflow: hidden;
+}
+
+body.hidden {
+  visibility: hidden;;
+}
+
+#indicator {
+  padding: 10px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  background: lightgreen;
+}
+
+#indicator p {
+  margin: 0 0 5px 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#indicator p span {
+  font-weight: bold;
+  color: red;
+}
+
+#wrapper {
+  position: relative;
+  overflow: auto;
 }
 
 .container {
-  position: relative;
+  height: 2000px;
 }
 
 .container .placeholder {
@@ -19,19 +52,39 @@ body {
 }
 
 .container .bar {
+  margin: auto;
+  outline: 1px solid blue;
+}
+
+.container .bar .bar-inner {
   width:600px;
   height: 50px;
-  margin: auto;
   border: 3px solid #CC0000;
-  background-color:#333333;
   font: bold 18px Arial, sans-serif;
   line-height: 50px;
   text-align: center;
   color: #FFF;
 }
 
-.container .bar:last-child {
-  background-color: #999999;
+.container .bar.first .bar-inner {
+  background-color:#000;
+}
+
+.container .bar.second .bar-inner {
+  background-color: #333;
+}
+
+.container .bar.third .bar-inner {
+  background-color: #666;
+}
+
+.container .bar.fourth .bar-inner {
+  background-color: #999;
+}
+
+.container .bar.fifth .bar-inner {
+  background-color: #DDD;
+  color: #666;
 }
 
 #logo {
@@ -44,14 +97,8 @@ body {
   border: 0;
 }
 
-#indicator {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-}
-
 @media screen and (max-width: 600px) {
-  .container .bar {
+  .container .bar .bar-inner {
     width: 100%;
   }
 }

@@ -1,48 +1,85 @@
-$(document).ready(function() {
+/* Bar Blocks */
+var barsElem = document.querySelectorAll('.bar');
+var bars = document.querySelectorAll('.bar .bar-inner');
 
-  /* Scroll to top when DOM loaded */
-  $(window).scrollTop(0);
+/* Make Array from Node Collection */
+barsElem = Array.prototype.slice.call(barsElem);
+bars = Array.prototype.slice.call(bars);
 
-  /* Select blocks */
-  var bars = $('.bar');
-  var firstBlock = bars.eq(0);
-  var lastBlock = bars.eq(1);
+/* Scroll to top and ajust wrapper height, when DOM loaded */
+window.scrollTo(0, 0);
+ajustWrapperHeight();
 
-  /* Create clone of first block and insert into DOM */
-  var clone = firstBlock.clone();
-  clone.hide();
-  firstBlock.after(clone);
+/* Indicators */
+var indicators = indicator.querySelectorAll('p span');
+indicators[3].innerHTML = Math.round(barsElem[0].getBoundingClientRect().top);
 
-  /* Window scroll event handler */
-  $(window).scroll(function() {
-    var windowScrollTop = $(window).scrollTop();
+/* Event Counters */
+var documentScrollEventsCounter = 0;
+var documentTouchMoveEventsCount = 0;
 
-    /* First Block Subhandler */
-    var firstBlockOffset = firstBlock.offset();
-    if(windowScrollTop > firstBlockOffset.top) {
-      clone.show().css({
-        position: 'fixed',
-        top: 0,
-        left: firstBlockOffset.left
-      });
-    }
-    else {
-      clone.hide();
-    }
+/* Set width and height for bar containers... */
+bars.forEach(function(bar) {
+  var barWidth = bar.offsetWidth;
+  var barHeight = bar.offsetHeight;
+  bar.parentElement.style.width = barWidth + 'px';
+  bar.parentElement.style.height = barHeight + 'px';
+});
 
-    /* Last Block Subhandler */
-    var lastBlockPositionType = lastBlock.css('position');
-    if(lastBlockPositionType == 'fixed') {
-      lastBlock.css('position', 'static');
-    }
+/* ... only after this show page */
+document.body.classList.remove('hidden');
 
-    var lastBlockOffset = lastBlock.offset();
-    if(windowScrollTop > lastBlockOffset.top) {
-      lastBlock.css({
-        position: 'fixed',
-        top: 0,
-        left: lastBlockOffset.left
-      });
+/* Set event handlers */
+window.addEventListener('resize', ajustWrapperHeight);
+wrapper.addEventListener('scroll', scrollEventHandler);
+wrapper.addEventListener('touchmove', touchmoveEventHandler);
+
+/* ---------------- Functions -------------------- */
+
+function ajustWrapperHeight() {
+  wrapper.style.height = window.innerHeight + 'px';
+  var barWidth = (document.documentElement.clientWidth <= 600)
+  ? window.document.documentElement.clientWidth
+  : 600;
+
+  barsElem.forEach(function(barElem) {
+    barElem.style.width = barWidth + 'px';
+  });
+
+  bars.forEach(function(bar) {
+    if(bar.style.position == 'fixed') {
+      bar.style.left = bar.parentElement.getBoundingClientRect().left + 'px';
     }
   });
-});
+}
+
+/* Events Handler */
+function scrollEventHandler(eventObject) {
+  var wrapperScrollTop = wrapper.scrollTop;
+
+  /* Set values for indicators */
+  indicators[0].innerHTML = ++documentScrollEventsCounter;
+  indicators[2].innerHTML = Math.round(wrapperScrollTop);
+  indicators[3].innerHTML = Math.round(barsElem[0].getBoundingClientRect().top);
+
+  /* Bars control */
+  barsElem.forEach(function(barElem) {
+    var elemRect = barElem.getBoundingClientRect();
+    var elemContent = barElem.querySelector('.bar-inner');
+
+    if(elemRect.top <= 0) {
+      elemContent.style.position = 'fixed';
+      elemContent.style.top = 0;
+      elemContent.style.left = elemRect.left + 'px';
+    }
+    else {
+      elemContent.style.position = '';
+      elemContent.style.top = '';
+      elemContent.style.left = '';
+    }
+  });
+}
+
+function touchmoveEventHandler(eventObject) {
+  indicators[1].innerHTML = ++documentTouchMoveEventsCount;
+}
